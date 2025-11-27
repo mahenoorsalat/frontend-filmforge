@@ -6,6 +6,9 @@ import {
   LayoutGrid, Bell, FileText, Calendar, DollarSign, Image, Users, 
   MapPin, Package, ChevronDown, Menu, LucideIcon 
 } from 'lucide-react';
+// Import Next.js routing components
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 // Define the two possible widths for Tailwind
 const SIDEBAR_WIDTH_FULL = 'w-[262px]';
@@ -15,13 +18,14 @@ const SIDEBAR_WIDTH_COLLAPSED = 'w-[72px]'; // A width to hold just the icons
 interface NavLinkProps {
   icon: LucideIcon; // Icon is a Lucide component/type
   text: string;
-  isActive?: boolean;
+  href: string; // Add href for the route
   hasNotification?: boolean;
 }
 
 export default function Sidebar() {
   // State to manage the open/closed status of the sidebar. 
   const [isExpanded, setIsExpanded] = useState(true);
+  const pathname = usePathname(); // Get current path
 
   const toggleSidebar = () => {
     setIsExpanded(!isExpanded);
@@ -31,24 +35,32 @@ export default function Sidebar() {
   const sidebarWidthClass = isExpanded ? SIDEBAR_WIDTH_FULL : SIDEBAR_WIDTH_COLLAPSED;
 
   // Custom component for a navigation link
-  // Use the defined NavLinkProps interface for typing
-  const NavLink: React.FC<NavLinkProps> = ({ icon: Icon, text, isActive = false, hasNotification = false }) => (
-    <button 
-      // ACTION: Reduced padding from py-3 to **py-2** for a smaller link size
-      className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-colors duration-200 
-        ${isActive ? 'bg-[#27272A]' : 'hover:bg-zinc-900'}
-      `}
-    >
-      <div className="relative flex-shrink-0">
-        <Icon className={`w-[18px] h-[18px] ${isActive ? 'text-zinc-100' : 'text-zinc-500'}`} />
-        {hasNotification && (
-          <div className="absolute -top-1 -right-1 w-[7px] h-[7px] bg-[#FB2C36] rounded-full" />
-        )}
-      </div>
-      {/* Only render text if expanded */}
-      {isExpanded && <span className={`text-sm font-medium ${isActive ? 'text-zinc-100' : 'text-zinc-500'}`}>{text}</span>}
-    </button>
-  );
+  const NavLink: React.FC<NavLinkProps> = ({ icon: Icon, text, href, hasNotification = false }) => {
+    // Determine if the link is active. Use a partial match for dynamic routes 
+    // (e.g., matching '/Schedule' highlights for '/Schedule' and '/Schedule1')
+    const isActive = href === '/' 
+        ? pathname === href 
+        : pathname.startsWith(href) && href !== '/';
+
+    return (
+      <Link 
+        href={href}
+        // ACTION: Reduced padding from py-3 to **py-2** for a smaller link size
+        className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-colors duration-200 
+          ${isActive ? 'bg-[#27272A]' : 'hover:bg-zinc-900'}
+        `}
+      >
+        <div className="relative flex-shrink-0">
+          <Icon className={`w-[18px] h-[18px] ${isActive ? 'text-zinc-100' : 'text-zinc-500'}`} />
+          {hasNotification && (
+            <div className="absolute -top-1 -right-1 w-[7px] h-[7px] bg-[#FB2C36] rounded-full" />
+          )}
+        </div>
+        {/* Only render text if expanded */}
+        {isExpanded && <span className={`text-sm font-medium ${isActive ? 'text-zinc-100' : 'text-zinc-500'}`}>{text}</span>}
+      </Link>
+    );
+  };
 
   return (
     <>
@@ -61,7 +73,7 @@ export default function Sidebar() {
       >
         {/* ACTION: Added **flex-grow** to the content wrapper to push the profile to the bottom. 
            Removed the unnecessary 'gap-9' as it interfered with the spacing. */}
-        <div className="flex flex-col **flex-grow**"> 
+        <div className="flex flex-col flex-grow"> 
           
           {/* Logo / Header (Always stays at the top) */}
           <div className={`flex items-center ${isExpanded ? 'justify-between' : 'justify-center'} pl-1 mb-8`}>
@@ -83,12 +95,13 @@ export default function Sidebar() {
           </div>
 
           {/* Navigation (Will take up all remaining space above the profile) */}
-          <div className="flex flex-col gap-6 **mb-auto**"> 
+          <div className="flex flex-col gap-6 mb-auto"> 
             
             {/* Main Nav */}
             <div className="flex flex-col gap-1">
-              <NavLink icon={LayoutGrid} text="Dashboard" isActive={true} />
-              <NavLink icon={Bell} text="Notifications" hasNotification={true} />
+              {/* Updated href for Dashboard and Notifications */}
+              <NavLink icon={LayoutGrid} text="Dashboard" href="/projecthome" />
+              <NavLink icon={Bell} text="Notifications" href="/notifications" hasNotification={true} />
             </div>
 
             {/* Workflow Section */}
@@ -99,10 +112,11 @@ export default function Sidebar() {
                 </div>
               )}
               <div className="flex flex-col gap-1">
-                <NavLink icon={FileText} text="Script breakdown" />
-                <NavLink icon={Calendar} text="Scheduling" />
-                <NavLink icon={DollarSign} text="Budgeting" />
-                <NavLink icon={Image} text="Storyboarding" />
+                {/* Updated hrefs for Workflow */}
+                <NavLink icon={FileText} text="Script breakdown" href="/scriptpreview" />
+                <NavLink icon={Calendar} text="Scheduling" href="/Schedule" />
+                <NavLink icon={DollarSign} text="Budgeting" href="/Budgeting" />
+                <NavLink icon={Image} text="Storyboarding" href="/StoryBoarding" />
               </div>
             </div>
 
@@ -114,10 +128,11 @@ export default function Sidebar() {
                 </div>
               )}
               <div className="flex flex-col gap-1">
-                <NavLink icon={Users} text="Crew" />
-                <NavLink icon={Users} text="Characters" /> 
-                <NavLink icon={MapPin} text="Sets and Locations" />
-                <NavLink icon={Package} text="Production Elements" />
+                {/* Updated hrefs for Manage */}
+                <NavLink icon={Users} text="Crew" href="/Crew" />
+                <NavLink icon={Users} text="Characters" href="/Character" /> 
+                <NavLink icon={MapPin} text="Sets and Locations" href="/Location" />
+                <NavLink icon={Package} text="Production Elements" href="/Production" />
               </div>
             </div>
           </div>

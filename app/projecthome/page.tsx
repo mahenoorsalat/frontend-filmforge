@@ -9,28 +9,28 @@ const steps = [
     title: "Welcome to FilmForge",
     description: "Your all-in-one tool to plan, budget, and manage your film production.",
     iconClass: "w-[274px]   flex items-center justify-center",
-    icon: <img src='./model1.png'/>
+    icon: <img src='./models/model1.png'/>
   },
   {
     title: "Start with Your Script",
     description: "Upload your script to automatically extract scenes, characters, and props with AI.",
     iconClass: "w-[274px]  bg-[#3C57FF] flex items-center justify-center",
- icon: <img src='./model2.png'/>  },
+ icon: <img src='./models/model2.png'/>  },
   {
     title: "Build Your Budget",
     description: "Create a clear budget by adding line items, assigning categories, and monitoring totals.",
     iconClass: "w-[274px] bg-[#52525C] flex items-center justify-center",
- icon: <img src='./model3.png'/>  },
+ icon: <img src='./models/model3.png'/>  },
   {
     title: "Plan the Shoot",
     description: "Set up your shooting schedule, generate call sheets, and track scene progress in one place.",
     iconClass: "w-[274px]  bg-[#FFB86A] flex items-center justify-center",
- icon: <img src='./model4.png'/>  },
+ icon: <img src='./models/model4.png'/>  },
   {
     title: "Visualize Your Story",
     description: "Create visual frames using AI. Bring your scenes to life before the shoot begins.",
     iconClass: "w-[274px]  bg-[#C27AFF] flex items-center justify-center",
- icon: <img src='./model5.png'/>  },
+ icon: <img src='./models/model5.png'/>  },
 ];
 
 const OnboardingModal = ({ onClose }: { onClose: () => void }) => {

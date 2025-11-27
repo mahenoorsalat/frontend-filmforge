@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { ChevronDown, MoreHorizontal, Plus, X } from 'lucide-react';
+import { useRouter } from "next/navigation";
+
 
 // --- Utility Components (Unchanged) ---
 
@@ -128,6 +130,8 @@ const DeleteConfirmationModal = ({ project, onClose }: {
 // --- Main Component ---
 
 export default function Home() {
+    const router = useRouter();
+
   const projects = [
     {
       id: 1,
@@ -240,7 +244,7 @@ export default function Home() {
                   {/* Project Actions Popover (Open Project, Edit, Delete) */}
                   {projectActionsId === project.id && (
                     <div className="absolute right-0 top-10 w-[150px] bg-[#27272A] rounded-lg shadow-xl z-10 p-1 border border-[#3C3C43]">
-                      <div className="px-3 py-2 text-white text-sm hover:bg-white/10 rounded-md cursor-pointer">
+                      <div onClick={() => router.push("/projecthome")} className="px-3 py-2 text-white text-sm hover:bg-white/10 rounded-md cursor-pointer">
                         Open Project
                       </div>
                       <div className="px-3 py-2 text-white text-sm hover:bg-white/10 rounded-md cursor-pointer">
